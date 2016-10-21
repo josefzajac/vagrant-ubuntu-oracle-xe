@@ -12,3 +12,5 @@ modules/wget
 oracle-jdbc/ojdbc6.jar
 
 target
+
+vendor/

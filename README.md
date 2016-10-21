@@ -1,3 +1,15 @@
+#SRC:
+https://github.com/alexei-led/docker-oracle-xe-11g
+
+
+#Install OCI8
+http://www.syahzul.com/2016/04/06/how-to-install-oci8-on-ubuntu-14-04-and-php-5-6/
+
+
+
+
+# --------------
+
 # Oracle XE 11g on Ubuntu 12.04 using Vagrant
 
 This project enables you to install Oracle 11g XE in a virtual machine running Ubuntu 12.04, using

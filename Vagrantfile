@@ -13,8 +13,10 @@ Vagrant.configure("2") do |config|
   # share this project under /home/vagrant/vagrant-ubuntu-oracle-xe
   config.vm.synced_folder ".", "/home/vagrant/vagrant-ubuntu-oracle-xe", :mount_options => ["dmode=777","fmode=666"]
 
+  config.vm.network :private_network, ip: "192.168.35.55"
+
   # Forward Oracle port
-  config.vm.network :forwarded_port, guest: 1521, host: 1521
+  #config.vm.network :forwarded_port, guest: 1521, host: 1521
 
   # Provider-specific configuration so you can fine-tune various backing
   # providers for Vagrant. These expose provider-specific options.
@@ -52,4 +54,6 @@ SCRIPT
 
   # Run the Maven goals for data-with-flyway
   config.vm.provision "shell", path: "flyway.sh"
+
+  config.vm.provision "shell", path: "vagrant/bootstrap.sh"
 end

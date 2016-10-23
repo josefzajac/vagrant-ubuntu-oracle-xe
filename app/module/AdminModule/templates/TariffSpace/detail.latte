@@ -1,0 +1,42 @@
+{extends "../@admin.latte"}
+
+{block mainHeader}
+    <h1>
+        Competition
+        <small>Create</small>
+    </h1>
+{/block}
+
+
+{block mainContent}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title"></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                {control editItemForm}
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+    <img n:src="$item->getSquareImage()->getNamespace(), $item->getSquareImage()->getName(), 250, 'fit'" n:if="$item->getSquareImage()" />
+    <img n:src="$item->getLandingImage()->getNamespace(), $item->getLandingImage()->getName()" n:if="$item->getLandingImage()" />
+</div>
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: "textarea",
+        entity_encoding : "raw",
+        relative_urls : false,
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table contextmenu paste code"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    });
+</script>

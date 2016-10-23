@@ -1,0 +1,96 @@
+competition:
+    menu:
+        home: Domů
+        info: Informace o soutěži
+        howto: Jak na to
+        gallery: Galerie
+        rules: Pravidla
+        login: Přihlásit
+        cs: Čestina
+        en: English
+        admin: Administrace
+        others: Domů
+
+    end: Soutěž ukončena.
+    start: 'Do začátku soutěže zbývá:'
+    author: 'Autor:'
+    detail: Zobrazit
+    part_saved: 'Fotka uložena. Přejeme mnoho štěstí v soutěži.'
+    text_saved: 'Příspěvek uložen. Přejeme mnoho štěstí v soutěži.'
+    part_error: 'Nahráni se nepodařilo.'
+    add_desc: 'Povolené obrázky: JPG, JPEG, PNG<br/>Maximální velikost: 10MB.'
+    rules_here: Pravidla k přečtení zde.
+    photolimit: Není možno přidat další obrázky.
+    votes: "Počet hlasů:"
+    read_next : "Čtěte dál!"
+    winners: 'Vítězné fotografie'
+    winner1: '1. místo'
+    winner2: '2. místo'
+    winner3: '3. místo'
+    finished: "Ukončené soutěže"
+    current:  "Aktuální fotosoutěže"
+    next:     "Připravované fotosoutěže"
+    mainHowto: "Jak na to?"
+    about: "Informace"
+
+modal:
+    close: Zavřít
+    vote: Hlasovat
+    next_today: 'Hlasovat bude možné dnes v hours'
+    next_tomorrow: 'Hlasovat bude možné zítra v hours'
+    next_next_day: 'Hlasovat bude možné hours'
+    login: Přihlásit
+    register: Zaregistrovat
+    register_button: Registrovat
+    add: Přidej
+    fb_share: Sdílet na facebooku
+    gp_share: 'Ahoj, hlasujte pro moji fotografii v soutěži Prahy 3'
+    add_photo: '+ Přidej fotografii'
+    logout: Odhlásit
+    fb_login: 'Přihlásit přes Facebook'
+    email: 'E-mail'
+    change_password: "Změna hesla"
+    old_password: "Současné heslo"
+    new_password: "Nové heslo"
+    forgotten: "Zapomněli jste své heslo?"
+    forgotten_proceed: 'Obnovit heslo'
+    recovery_button: 'Uložit nové heslo'
+
+vote:
+    success: 'Hlas byl zaznamenán.'
+    error: 'Hlasování se nepodařilo.'
+    24_hour: 'Z vaší IP bylo hlasováno, další možnost bude date.'
+    part_not_fount: 'Soutěžní položka nenalezena.'
+    too_late: 'Soutěž ukončena.'
+    too_early: 'Hlasování začne date'
+    too_early_in: 'Hlasování začne za'
+    days: 'dní'
+    hours: 'h'
+    minutes: 'm'
+    seconds: 's'
+
+user:
+    success: 'Byl jste úspěšně přihlášen.'
+    logout: 'Byl jste úspěšně odhlášen.'
+    not_found: 'Uživatel nenalezen.'
+    wrong_pass: 'Chybné heslo.'
+    error: 'Nastala chyba při přihlášení.'
+    user_registered: 'Registrace dokončena.'
+    email_unique: 'E-mail je již registrován.'
+    recovery_error: 'Chyba při obnovení hesla. Zkuste to, prosím, znovu.'
+    change_password: 'Změnit heslo'
+    wrong_old_password: 'Současné heslo je chybné.'
+    forgotten_subject: 'Obnova hesla pro Fotosoutěž Prahy 3'
+    recovery_sent: 'Na zadanou e-mailovou adresu byly zaslány instrukce.'
+
+mail:
+    header: "Dobrý den,"
+    subject_decline: "Zamítnutí soutěžní fotografie - Fotosoutěž Prahy 3"
+    decline_text: "Vážený pane/ Vážená paní,<br/><br/>Vaše soutěžní fotografie \"name\" byla vyřazena z důvodu:<br/> message <br/><br/>Děkujeme za pochopení.<br/><br/>S pozdravem<br/><br/>Milan Hájek<br/><br/>referent oddělení vnějších vztahů a Radničních novin"
+    recovery1: "tento e-mail Vám byl zaslán z důvodu vaší žádosti o obnovení zapomenutého hesla.<br/>Pokud jste o to nežádal vy, zvažte základní bezpečnostní pravidla, například změnu hesla na vašem primárním e-mailu."
+    recovery2: "Tento odkaz Vás dovede na zadání nového hesla. Odkaz je platný pouze jednu hodinu."
+
+admin:
+    access_not_granted: "Nemate opravneni do teto sekce"
+    item_added: "Položka přidána"
+    item_updated: "Položka upravena"

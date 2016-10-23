@@ -1,0 +1,10 @@
+{extends "default.latte"}
+
+{block title}Pravidla soutěže{/block}
+
+{block competitionContent}
+
+<div class="news-box">
+    {!$competition->getRules()}
+</div>
+

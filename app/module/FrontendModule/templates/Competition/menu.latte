@@ -1,0 +1,19 @@
+{extends '../Frontend/menu.latte'}
+
+{block leftMenu}
+<a href="{link :Frontend:Frontend:default}" class="btn btn-info">{_tr.competition.menu.others}</a>
+{/block}
+
+{block rightMenu}
+<li class="{if $presenter->action == gallery}active{/if}">
+    <a n:href="Competition:gallery">{_tr.competition.menu.gallery}</a></li>
+<li class="{if $presenter->action == info}active{/if}">
+    <a n:href="Competition:info" class="font-red"><strong>{_tr.competition.menu.info}</strong></a></li>
+<li class="{if $presenter->action == rules}active{/if}">
+    <a n:href="Competition:rules">{_tr.competition.menu.rules}</a></li>
+<li class="{if $presenter->action == howto}active{/if}">
+    <a n:href="Competition:howto" class="font-red"><strong>{_tr.competition.menu.howto}</strong></a></li>
+<li n:if="$competition->event_url">
+    <a href="{$competition->event_url}" target="_blank" class="small-padding">
+        <img src="{$basePath}/assets/fb_event.png" alt="FB udalost" /></a></li>
+<li role="separator" class="divider"></li>

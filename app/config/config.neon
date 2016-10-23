@@ -1,0 +1,65 @@
+parameters:
+	libsDir: %appDir%/../libs
+	memcached:
+		host: host
+		port: port
+		prefix: prefix
+	admin_mail: fotosoutez@praha3.cz
+	uploads_path: %appDir%/../www
+
+php:
+	date.timezone: Europe/Prague
+
+doctrine:
+    user: user
+    password: pwd
+    dbname: dbname
+    metadata:
+        App: %libsDir%/Model/Entity
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+session:
+	expiration: 14 days
+
+translation:
+    default: cs
+    fallback: [cs_CZ, cs]
+    whitelist: [cs, en]
+
+services:
+	# Router
+	router: App\RouterFactory::createRouter
+
+	# Security
+	authenticator: App\Security\Authenticator
+	authorizator: App\Security\Acl
+
+	# Repositories
+	- App\Model\Repository\Authors()
+	- App\Model\Repository\Competitions()
+	- App\Model\Repository\Ips()
+	- App\Model\Repository\IpLogs()
+	- App\Model\Repository\MailHistoryRepo()
+	- App\Model\Repository\Participations()
+	- App\Model\Repository\ParticipationTexts()
+	- App\Model\Repository\Stylesheets()
+	- App\Model\Repository\TariffSpaces()
+	- App\Model\Repository\Users()
+	- App\Model\Repository\Votes()
+
+	# Factory
+	- App\Model\Factory\EntityFactory()
+	- App\Email\MyMail()
+
+extensions:
+    # Kdyby
+    console: Kdyby\Console\DI\ConsoleExtension
+    events: Kdyby\Events\DI\EventsExtension
+    annotations: Kdyby\Annotations\DI\AnnotationsExtension
+    doctrine: Kdyby\Doctrine\DI\OrmExtension
+    validator: Kdyby\Validator\DI\ValidatorExtension
+    translation: Kdyby\Translation\DI\TranslationExtension

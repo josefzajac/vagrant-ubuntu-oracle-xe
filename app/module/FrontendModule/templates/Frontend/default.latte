@@ -1,0 +1,49 @@
+{extends "feLayout.latte"}
+
+{block feContent}
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h1 class="text-center">Fotografujete? Rádi soutěžíte? Chcete  získat hodnotné ceny?</h1>
+            <p class="text-center">Městská část Praha 3 si pro Vás připravila fotografické soutěže zaměřené na akce, místa a památky na území Prahy 3. Zaregistrujte se a zařaďte svou fotografii do soutěže, podrobnější informace naleznete v jednotlivých kategoriích.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <a n:href="Frontend:current" class="text-center">
+                <div class="panel-heading"><h3>{_tr.competition.current}</h3></div>
+                <img class="center-block" width="150px"  src="{$basePath}/assets/fotosoutez_aktualni_icon.png""/>
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <a n:href="Frontend:next" class="text-center">
+                <div class="panel-heading"><h3>{_tr.competition.next}</h3></div>
+                <img class="center-block" width="150px"  src="{$basePath}/assets/fotosoutez_priporavovane_icon.png""/>
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <a n:href="Frontend:old" class="text-center">
+                <div class="panel-heading"><h3>{_tr.competition.finished}</h3></div>
+                <img class="center-block" width="150px"  src="{$basePath}/assets/fotosoutez_ukoncene_icon.png""/>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <a n:href="Frontend:mainHowto" class="text-center">
+                <div class="panel-heading"><h3>{_tr.competition.mainHowto}</h3></div>
+                <img class="center-block" width="150px"  src="{$basePath}/assets/fotosoutez_jak_na_to_icon.png""/>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <a n:href="Frontend:about" class="text-center">
+                <div class="panel-heading"><h3>{_tr.competition.about}</h3></div>
+                <img class="center-block" width="150px"  src="{$basePath}/assets/fotosoutez_o_projektu_icon.png""/>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        </div>
+    </div>

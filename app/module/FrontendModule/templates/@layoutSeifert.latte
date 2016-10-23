@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{ifset title}{include title|striptags} | {/ifset}Seifertův Žižkov - Literární soutěž 2016 - 2017</title>
+    <link rel="shortcut icon" href="{$basePath}/favicon.ico">
+    <meta name="author" content="JosefZajac;iNFINITE Production">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="{$basePath}/css/seifert.css?r=3" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lobster|La+Belle+Aurore&subset=latin-ext" rel="stylesheet">
+
+    {ifset metaOpengraph}{include metaOpengraph}{/ifset}
+    {ifset metaTwittercard}{include metaTwittercard}{/ifset}
+
+    {ifset headInclude}{include headInclude}{/ifset}
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: {$FB_APP_ID},
+            xfbml: true,
+            version: 'v2.5'
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    q = 'click';
+</script>
+
+<div class="header">
+    <div class="container" style="text-align:right;">
+        <div class="logo">
+            <img src="{$basePath}/img/logo.png" style="margin-bottom:-2.4%;margin-top:10px;">
+        </div>
+        <div style="clear:both"></div>
+    </div>
+</div>
+
+{include 'Seifert/menu.latte'}
+
+<div class="content">
+    {include content}
+</div>
+
+<div class="footer">
+    <a n:if="$user->isInRole('administrator')" class="btn btn-danger"
+       n:href=":Admin:Homepage:default">{_tr.competition.menu.admin}</a>
+    <br/><br/>
+    <!--a class="btn btn-default {if $locale == cs}active{/if}" href="{link this, locale=>cs}">{_tr.competition.menu.cs}</a-->
+    <!--a class="btn btn-default {if $locale == en}active{/if}" href="{link this, locale=>en}">{_tr.competition.menu.en}</a-->
+    <a href="http://www.praha3.cz/" target="_blank">
+        <img src="{$basePath}/assets/P3_45px.png" alt="Praha 3" width="35" height="35" /></a>
+    <a href="https://plus.google.com/u/0/114702909582282254376" target="_blank">
+        <img src="{$basePath}/assets/Google_45px.png" alt="Google plus Prahy 3"  width="35" height="35" /></a>
+    <a href="https://www.facebook.com/praha3.cz/" target="_blank">
+        <img src="{$basePath}/assets/Facebook_45px.png" alt="Facebook Prahy 3"  width="35" height="35" /></a>
+    <a href="https://www.youtube.com/channel/UCutF-oy5GGWv3M_Ib1Rjnsg" target="_blank">
+        <img src="{$basePath}/assets/Youtube_45px.png" alt="Youtube Prahy 3"  width="35" height="35" /></a>
+    <a href="http://www.praha3.cz/kontakty/rss-a-atom/index.html" target="_blank">
+        <img src="{$basePath}/assets/rss_45px.png" alt="RSS Prahy 3"  width="35" height="35" /></a>
+    <br/><br/>
+    <a href="http://www.praha3.cz/urad/index.html">Praha 3</a> &copy; {php echo date('Y')} | <a href="mailto:seifertuvzizkov@praha3.cz">seifertuvzizkov@praha3.cz</a><br/><br/>
+    Obsah těchto stránek se řídí licencí (<a href="https://creativecommons.org/licenses/by-sa/3.0/cz/" target="_blank">CC BY-SA 3.0 CZ</a>);<br/>
+    Uveďte původ-Zachovejte licenci 3.0 Česká republika<br/>
+</div>
+
+
+<div class="eu-cookies" n:if="empty($_COOKIE[eu-cookies])">
+    Tento web používá k poskytování služeb, personalizaci reklam a analýze
+    návštěvnosti soubory cookie. Používáním tohoto webu s tím souhlasíte.
+    <button>V pořádku</button>
+    <a href="https://www.google.com/policies/technologies/cookies/">Další informace</a>
+</div>
+<noscript><style>.eu-cookies { display:none }</style></noscript>
+
+    <script src="{$basePath}/js/frontend/libs-min.js?r=1"></script>
+    <script src="{$basePath}/js/frontend/app-min.js?r=1"></script>
+    <script type="text/javascript"> var userip; </script>
+    <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+    <script type="text/javascript">
+        Cookies.set('ip', userip);
+    </script>
+
+    <script type="text/javascript">
+        var clock;
+        jQuery(document).ready(function () {
+            {if isset($competition)}
+            // Grab the current date
+            var currentDate = new Date();
+
+            {var $date = $competition->getStartDate()}
+            var futureDate = new Date({$date->format('Y')}, {$date->format('m')}-1, {$date->format('d')}, {$date->format('H')}, {$date->format('i')});
+            // Instantiate a coutdown FlipClock
+            clock = jQuery('.clock').FlipClock(futureDate.getTime() / 1000 - currentDate.getTime() / 1000,
+                    {
+                        clockFace: 'DailyCounter',
+                        countdown: true,
+                        language: 'cs'
+                    });
+            {/if}
+        });
+    </script>
+</body>
+</html>

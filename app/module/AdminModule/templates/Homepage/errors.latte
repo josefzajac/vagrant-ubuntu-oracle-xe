@@ -1,0 +1,14 @@
+{extends "../@admin.latte"}
+
+{block mainHeader}
+{/block}
+
+{block mainContent}
+<div class="row">
+    <h2>Error.log</h2>
+    {!$error_log|nl2br}
+
+    <h2>Exception.log</h2>
+    {!$exception_log|nl2br}
+</div>
+{/block}

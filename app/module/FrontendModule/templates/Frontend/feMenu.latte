@@ -1,0 +1,14 @@
+{extends 'menu.latte'}
+
+{block leftMenu}
+    {if !$isHome}
+    <a href="{link :Frontend:Frontend:default}" class="btn btn-info">{_tr.competition.menu.others}</a>
+    {/if}
+{/block}
+
+
+{block rightMenu}
+    <li class="{if $presenter->action == mainHowto}active{/if}">
+        <a n:href="Frontend:mainHowto" class="font-red"><strong>{_tr.competition.menu.howto}</strong></a></li>
+    <li role="separator" class="divider"></li>
+{/block}

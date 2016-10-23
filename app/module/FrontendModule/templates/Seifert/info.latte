@@ -1,0 +1,11 @@
+{extends "default.latte"}
+
+{block title}Informace{/block}
+
+{block competitionContent}
+
+<div class="news-box">
+    {!$competition->getInfo()}
+</div>
+
+<a n:href="Seifert:rules">{_tr.competition.rules_here}</a>

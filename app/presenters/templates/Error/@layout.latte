@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{ifset title}{include title|striptags} | {/ifset}Praha 3 soutěžní aplikace</title>
+    <link rel="shortcut icon" href="{$basePath}/favicon.ico">
+    <link href="{$basePath}/css/frontend/app.css" rel="stylesheet">
+
+    {ifset metaOpengraph}{include metaOpengraph}{/ifset}
+    {ifset metaTwittercard}{include metaTwittercard}{/ifset}
+
+    {ifset $competition_css}
+        <link href="{$basePath}{$competition_css}" rel="stylesheet">
+    {/ifset}
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        {*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">*}
+        <img class="center-block" width="100%" src="https://placeimg.com/1920/200/arch"/>
+        {*</div>*}
+    </div>
+</div>
+
+<nav class="navbar navbar-default">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <form class="navbar-form">
+                        <!--a class="btn btn-danger" n:href=":Admin:Homepage:default">{_tr.competition.menu.admin}</a-->
+                        <div class="btn-group" role="group">
+
+                            <a class="btn btn-default" n:href=":Frontend:Frontend:default">Fotogalerie</a>
+
+                            <a class="btn btn-default" href="http://www.praha3.cz/" target="_blank">Praha 3</a>
+                            <a class="btn btn-default" href="https://www.facebook.com/praha3.cz/" target="_blank">Facebook</a>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <div class="navbar-form navbar-right">
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div class="container">
+
+    <div class="row">
+
+        {include content}
+
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-5 col-sm-12 col-xs-12">
+            <a href="http://www.praha3.cz/urad/index.html">Praha 3</a> &copy; {php echo date('Y')}</div>
+    </div>
+</div>
+</div>
+{block scripts}
+    <script src="{$basePath}/js/frontend/libs.js"></script>
+    <script src="{$basePath}/js/frontend/app.js"></script>
+{/block}
+</body>
+</html>

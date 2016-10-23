@@ -1,0 +1,65 @@
+{extends "../@admin.latte"}
+
+{block mainHeader}
+    <h1>
+        Prispevky
+    </h1>
+    <h4>
+        <a n:href="detail"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Pridej</a>
+    </h4>
+{/block}
+
+{block mainContent}
+    <div class="row">
+
+        <div class="col-xs-12">
+            <div class="box">
+
+                <div class="box-header">
+                    {for $i = 0; $i < ceil($total/$limit); $i++}
+                        <a n:href="this, 'page'=>$i" class="btn btn-primary">{$i+1}</a>
+                    {/for}
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nazev</th>
+                            <th>Uzivatel</th>
+                            <th>Hlasu</th>
+                            <th>Img</th>
+                            <th>Upravit</th>
+                        </tr>
+                        <tr n:foreach="$all_items as $item" class="bs-glyphicons">
+                            <td>{$item->id}</td>
+                            {if $item instanceof \App\Model\Entity\ParticipationText}
+                                <td><a n:href="ParticipantText:decline $item->id">{$item->name}</a></td>
+                            {else}
+                            <td><a n:href="detail $item->id">{$item->name}</a></td>
+                            {/if}
+                            <td><a href="{link User:detail, id => $item->getUser()->id}">{$item->getUser()->name}</a></td>
+                            <td><a n:href="votes $item->id">{$item->votes_int} [{$item->getVoteAverage()}]</a></td>
+                            <td>{foreach $item->getImages() as $image}
+                                    <table><tr>
+                                        <td><a href="{image $image->getNamespace(), $image->getName()}" target="_blank"><img n:src="$image->getNamespace(), $image->getName(), medium" width="150"/></a></td>
+                                        <td>{$image->width} x {$image->height}</td></tr></table>
+                                {/foreach}
+                            </td>
+                            {if $item instanceof \App\Model\Entity\ParticipationText}
+                                <td><a n:href="ParticipantText:detail $item->id">Uprav</a></td>
+                            {else}
+                                <td><a n:href="detail $item->id">Uprav</a></td>
+                            {/if}
+                        </tr>
+                    </table>
+                </div>
+                <div class="box-header">
+                    {for $i = 0; $i < ceil($total/$limit); $i++}
+                        <a n:href="this, 'page'=>$i" class="btn btn-primary">{$i+1}</a>
+                    {/for}
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

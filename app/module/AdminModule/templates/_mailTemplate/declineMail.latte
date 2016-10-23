@@ -1,0 +1,9 @@
+{extends "../../../FrontendModule/templates/_mailTemplate/@mailLayout.latte"}
+
+{block title}
+    Fotosoutěž Prahy 3 - zamítnutí soutěžní fotografie
+{/block}
+
+{block body}
+
+{_'tr.mail.decline_text', ['name'=>$name, 'message'=>$message]|noescape}

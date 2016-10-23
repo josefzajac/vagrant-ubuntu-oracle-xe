@@ -6,7 +6,17 @@ https://github.com/alexei-led/docker-oracle-xe-11g
 http://www.syahzul.com/2016/04/06/how-to-install-oci8-on-ubuntu-14-04-and-php-5-6/
 
 
+SQL>
+create user tester identified by 1234;
+grant create session to tester;
 
+create tablespace tester_space datafile 'tester_space.dat' size 10M autoextend on;
+create user tester identified by 1234 default tablespace tester_space;
+grant create session to tester;
+grant create table to tester;
+grant unlimited tablespace to tester;
+
+create table test_table (id int not null, text varchar2(200), primary key (id));
 
 # --------------
 

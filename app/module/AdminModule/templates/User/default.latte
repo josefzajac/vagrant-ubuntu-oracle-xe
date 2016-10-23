@@ -1,0 +1,51 @@
+{extends "../@admin.latte"}
+
+{block mainHeader}
+    <h1>
+        Uzivatele
+    </h1>
+{/block}
+
+{block mainContent}
+    <div class="row">
+
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    {for $i = 1; $i <= ceil($total/$limit); $i++}
+                        <a n:href="this, 'page'=>$i" class="btn btn-primary">{$i}</a>
+                    {/for}
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nazev</th>
+                            <th>E-mail</th>
+                        </tr>
+                        <tr n:foreach="$all_items as $item" class="bs-glyphicons">
+                            <td>{$item->id}</td>
+                            <td><a href="{link User:detail, id => $item->id}">{$item->name}</a></td>
+                            <td>{$item->email}</td>
+                            <td><table>{foreach $item->getParticipations() as $p}
+                                    <tr><td style="width: 200px;">
+                                        <b>{$p->getCompetition()->getName()}</b><br/>
+                                        {$p->name}</td><td>
+                                    {foreach $p->getImages() as $image}
+                                        <img n:src="$image->getNamespace(), $image->getName(), medium" >
+                                    {/foreach}
+                                    </td></tr>
+                            {/foreach}</table></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="box-header">
+                    {for $i = 1; $i <= ceil($total/$limit); $i++}
+                        <a n:href="this, 'page'=>$i" class="btn btn-primary">{$i}</a>
+                    {/for}
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

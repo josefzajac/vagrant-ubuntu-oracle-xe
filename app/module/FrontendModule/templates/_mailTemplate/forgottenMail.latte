@@ -1,0 +1,11 @@
+{extends "./@mailLayout.latte"}
+
+{block title}
+    {_'tr.mail.header'|noescape}
+{/block}
+
+{block body}
+
+{_'tr.mail.recovery1'|noescape}
+
+<a href="{link //:Frontend:Login:passwordRecovery, hash=>$hash}">{_'tr.mail.recovery2'|noescape}</a>

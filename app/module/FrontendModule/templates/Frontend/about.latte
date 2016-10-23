@@ -1,0 +1,50 @@
+{extends "feLayout.latte"}
+
+{* duplicate Frontend:mainHowto   vs Competition:howto *}
+
+{block title}{if $locale == 'cs'}
+    Jak na to?{else}
+    Howto{/if}{/block}
+
+{block feContent}
+
+<div class="container rules">
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" n:if="$locale == 'cs'">
+
+            <h1 class="text-center">Informace</h1>
+            <p>
+                Městská část Praha 3 vytvořila webovou aplikaci pro zapojení občanů do dění na Praze 3. Webová aplikace je soubor fotosoutěží, které jsou otevřené pro každého příležitostného fotografa, fotoamatéra i profesionála. Jednotlivá témata Vám umožňují zveřejnit pohled na krásy a život Žižkova a Vinohrad.
+            </p>
+            <p>
+                Závěrem každé fotosoutěže jsou odměny, např. uveřejnění fotografie v kalendáři MČ Praha 3 a další ceny. Nicméně hlavním cílem webové aplikace je nabídka ukázat své schopnosti a zároveň odstartovat zájem dotyčného k další fotografické tvorbě a zdravé soutěživosti.<br/>
+                Pro účast ve fotosoutěi stačí pořídit fotografie barevné či černobílé související s aktuálním životem a ruchem na Praze 3.<br/>
+                Těšíme se na výsledky Vašeho snažení!
+            </p>
+            <p>
+                Jakékoli připomínky nebo nápady na zlepšení aplikace můžete zasílat na e-mail <a href="mailto: fotosoutez@praha3.cz"> fotosoutez@praha3.cz</a><br/>
+                Nejde se Vám přihlásit? Nemůžete nahrát fotografii? V případě problémů kontaktujte technickou podporu:
+            </p>
+            <p>
+                Milan Hájek<br/>
+                <a href="mailto: fotosoutez@praha3.cz"> fotosoutez@praha3.cz</a>
+            </p>
+        </div>
+
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" n:if="$locale == 'en'">
+
+            <h1 class="text-center">Howto</h1>
+
+            Městská část Praha 3, <br/>
+            Havlíčkovo nám. 700/9 <br/>
+            130 85 Praha 3<br/>
+            IČ: 00063517, DIČ: CZ00063517 <br/>
+            <br/>
+
+        </div>
+
+
+    </div>
+</div>

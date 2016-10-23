@@ -1,0 +1,16 @@
+parameters:
+    admin_mail: josef.zajac@gmail.com
+
+doctrine:
+    user: system
+    password: manager
+    port: 1521
+    dbname: system
+    driver: oci8
+    servicename: XE
+    connectstring: localhost:1521/XE
+
+services:
+    nette.latteFactory:
+        setup:
+            - setTempDirectory(null)

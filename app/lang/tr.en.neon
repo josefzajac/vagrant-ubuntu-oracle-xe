@@ -1,0 +1,84 @@
+competition:
+    menu:
+        home: Home
+        info: Competition info
+        howto: Howto
+        gallery: Gallery
+        rules: Rules
+        login: Log In
+        cs: Cestina
+        en: English
+        admin: Administration
+        others: Next competitions
+
+    end: Competition ended.
+    start: 'Countdown to start'
+    author: 'by:'
+    detail: Show
+    part_saved: 'Uloženo.'
+    part_error: 'Nahráni se nepodařilo.'
+    add_desc: 'Allowed image formats: JPG, JPEG, PNG<br/> Maximal image size: 10MB'
+    rules_here: Rules are here.
+    photolimit: User can't add more photos.
+    votes: "Vote count:"
+    read_next : "Read next!"
+    winners: 'Winners'
+    winner1: '1st place'
+    winner2: '2nd place'
+    winner3: '3rd place'
+    finished: "Finished competitions"
+
+modal:
+    close: Close
+    vote: Vote!
+    next_today: 'Next vote today at hours'
+    next_tomorrow: 'Next vote tomorrow at hours'
+    login: Login
+    register: New registration
+    register_button: Register
+    add: Add
+    fb_share: FB share
+    add_photo: '+ Add photo'
+    gp_share: 'Hi, vote for my photo in Prague 3 competition '
+    logout: Logout
+    fb_login: 'Sign up using Facebook'
+    email: 'E-mail'
+    change_password: "Change password"
+    old_password: "Current password"
+    new_password: "New password"
+    forgotten: "Do you need password reset?"
+    forgotten_proceed: 'Password reset'
+    recovery_button: 'Reset password'
+
+vote:
+    success: 'Vote counted'
+    error: 'Voting failed.'
+    24_hour: 'We already have vote from your IP, next option wil be at date.'
+    part_not_fount: 'Participant not fount.'
+    too_late: 'Competition ended.'
+    too_early: 'Competition not started'
+
+user:
+    success: 'Login successful'
+    not_found: 'User not fount.'
+    wrong_pass: 'Wrong password.'
+    error: 'Login error.'
+    user_registered: 'Register successful.'
+    email_unique: 'E-mail already exists.'
+    recovery_error: 'Password reset error, try again, please.'
+    change_password: 'Change password'
+    wrong_old_password: 'Current password is wrong.'
+    forgotten_subject: 'Password reset for Photoshooting competition Prague 3'
+    recovery_sent: 'Instructions has been sent do inserted e-mail.'
+
+mail:
+    header: "Hello,"
+    subject_decline: "Competition photo decline - Fotosoutěž Prahy 3"
+    decline_text: "Your's photo \"name\" had been declined dyue reason:\n message"
+    recovery1: "Dear user,\n\nthis e-mail has been sent to you due password reset request.\nIf you didn't requested password reset, consider basic online security rules, as first your primary e-mail password change."
+    recovery2: "This link goes to password reset. Link is valid only for next hour."
+
+admin:
+    access_not_granted: "You don't have permissions enter this."
+    item_added: "Item added"
+    item_updated: "Item updated"

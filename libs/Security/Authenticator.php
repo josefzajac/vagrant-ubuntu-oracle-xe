@@ -28,7 +28,7 @@ class Authenticator extends Object implements IAuthenticator
     /**
      * Performs an authentication against e.g. database.
      * and returns IIdentity on success or throws AuthenticationException
-     * @param  array                   $credentials
+     * @param  array $credentials
      * @throws AuthenticationException
      * @return IIdentity
      */

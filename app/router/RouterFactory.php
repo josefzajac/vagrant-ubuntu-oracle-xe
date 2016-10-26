@@ -13,7 +13,7 @@ class RouterFactory
      */
     public static function createRouter()
     {
-        $router   = self::createBaseRouter();
+        $router = self::createBaseRouter();
         $router[] = self::createAdminRouter('Admin', 'admin');
 
         return $router;
@@ -21,14 +21,14 @@ class RouterFactory
 
     private static function createBaseRouter()
     {
-        $router   = new RouteList();
+        $router = new RouteList();
 
         return $router;
     }
 
     private static function createAdminRouter($moduleName, $routePrefix)
     {
-        $router   = new RouteList($moduleName);
+        $router = new RouteList($moduleName);
         $router[] = self::route($routePrefix . '/<presenter>/<action>[/<model>]', 'Homepage:default');
 
         return $router;

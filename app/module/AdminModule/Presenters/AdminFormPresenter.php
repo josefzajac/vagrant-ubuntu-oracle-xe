@@ -58,7 +58,7 @@ abstract class AdminFormPresenter extends AdminPresenter
     public function createComponentEditItemForm()
     {
         $formLabel = $this->getFormName();
-        $form      = new $formLabel($this, 'editItemForm');
+        $form = new $formLabel($this, 'editItemForm');
         $form->create();
         $form->addSubmit('send', 'Uložit')
             ->onClick[] = [$this, 'doItemForm'];
@@ -66,14 +66,17 @@ abstract class AdminFormPresenter extends AdminPresenter
         return $form;
     }
 
-    public function doItemForm(Nette\Forms\Controls\SubmitButton $button, $redirectDestination = 'default', $redirectParameters = [])
-    {
-        $data    = $button->getForm()->getValues();
-        $id      = $data['id'];
-        $item    = $this->repo->repository()->findOneById($id);
+    public function doItemForm(
+        Nette\Forms\Controls\SubmitButton $button,
+        $redirectDestination = 'default',
+        $redirectParameters = []
+    ) {
+        $data = $button->getForm()->getValues();
+        $id = $data['id'];
+        $item = $this->repo->repository()->findOneById($id);
         $newItem = false;
         if (is_null($item)) {
-            $item    = $this->entityFactory->create($this->getEntityName());
+            $item = $this->entityFactory->create($this->getEntityName());
             $newItem = true;
         }
         try {
@@ -101,6 +104,8 @@ abstract class AdminFormPresenter extends AdminPresenter
     protected function preSave($item, $data, $em)
     {
     }
+
     abstract protected function getEntityName();
+
     abstract protected function getFormName();
 }

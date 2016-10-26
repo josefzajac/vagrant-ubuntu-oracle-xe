@@ -39,7 +39,7 @@ class ErrorPresenter extends BasePresenter
 
     public function errorMailer($message, $email)
     {
-        $this->sendMail($email, 'ERROR KUBA', ['text'=>$this->formatMessage($message)], ['Frontend','500Mail']);
+        $this->sendMail($email, 'ERROR KUBA', ['text' => $this->formatMessage($message)], ['Frontend', '500Mail']);
     }
 
     protected function formatMessage($message)

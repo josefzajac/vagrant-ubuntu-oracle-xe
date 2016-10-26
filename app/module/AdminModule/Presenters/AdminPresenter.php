@@ -43,7 +43,7 @@ abstract class AdminPresenter extends BasePresenter
     public function actionLogin($login, $password)
     {
         $success = true;
-        try{
+        try {
             $this->getUser()->login($login, $password);
         } catch (Nette\Security\AuthenticationException $e) {
             $success = false;
@@ -51,9 +51,11 @@ abstract class AdminPresenter extends BasePresenter
 
         $user = $this->getUser();
 
-        echo json_encode([
-            'success' => $success && $user->isLoggedIn() && $user->isAllowed('Admin'),
-        ]);
+        echo json_encode(
+            [
+                'success' => $success && $user->isLoggedIn() && $user->isAllowed('Admin'),
+            ]
+        );
         $this->terminate();
     }
 
@@ -61,9 +63,11 @@ abstract class AdminPresenter extends BasePresenter
     {
         $this->getUser()->logout(true);
 
-        echo json_encode([
-            'success'=>true,
-        ]);
+        echo json_encode(
+            [
+                'success' => true,
+            ]
+        );
         $this->terminate();
     }
 
@@ -71,9 +75,11 @@ abstract class AdminPresenter extends BasePresenter
     {
         $user = $this->getUser();
 
-        echo json_encode([
-            'success' => $user->isLoggedIn() && $user->isAllowed('Admin'),
-        ]);
+        echo json_encode(
+            [
+                'success' => $user->isLoggedIn() && $user->isAllowed('Admin'),
+            ]
+        );
         $this->terminate();
     }
 }

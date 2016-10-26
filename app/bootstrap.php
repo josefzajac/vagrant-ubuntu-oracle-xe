@@ -7,15 +7,28 @@ if (!function_exists('dump')) {
     {
         return \Tracy\Debugger::dump($args);
     }
-    function d($args) { return dump($args);}
-    function dd($args) { return dump($args); die();}
+
+    function d($args)
+    {
+        return dump($args);
+    }
+
+    function dd($args)
+    {
+        return dump($args);
+        die();
+    }
 }
 if (!function_exists('barDump')) {
     function barDump($args)
     {
         return \Tracy\Debugger::barDump($args);
     }
-    function bd($args) { return barDump($args);}
+
+    function bd($args)
+    {
+        return barDump($args);
+    }
 }
 
 $configurator = new Nette\Configurator();

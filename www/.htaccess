@@ -1,0 +1,6 @@
+RewriteEngine On
+
+RewriteBase /
+
+# this is required
+RewriteRule ^(.*) index.php [L]

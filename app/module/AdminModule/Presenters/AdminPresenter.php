@@ -3,14 +3,33 @@
 namespace App\AdminModule\Presenters;
 
 use App\Presenters\BasePresenter;
+use App\Model\ModelStorage;
+use Nette;
 
 abstract class AdminPresenter extends BasePresenter
 {
+    /** @var \Dibi\Connection @inject */
+    public $db;
+
     protected function startup()
     {
         parent::startup();
 
+        if ($this->getParameter('callback')) {
+            \Tracy\Debugger::enable(\Tracy\Debugger::DEBUG);
+        }
+
+        ModelStorage::$db = $this->db;
+        $this->template->lastVersion = 1;
+
+
+//        $panel = new \Dibi\Bridges\Tracy\Panel;
+//        $panel->register($this->db);
+
+
         $user = $this->getUser();
+
+
 //        if (!$user->isLoggedIn()) {
 //            $this->redirect(':Frontend:Login:login', ['return_url' => $this->getHttpRequest()->getUrl()->getAbsoluteUrl()]);
 //        }
@@ -21,13 +40,40 @@ abstract class AdminPresenter extends BasePresenter
 //        }
     }
 
-    /**
-     */
-    protected function beforeRender()
+    public function actionLogin($login, $password)
     {
-        parent::beforeRender();
-        $this->template->new_participations = [];
+        $success = true;
+        try{
+            $this->getUser()->login($login, $password);
+        } catch (Nette\Security\AuthenticationException $e) {
+            $success = false;
+        }
 
-        $this->template->active_competitions = [];
+        $user = $this->getUser();
+
+        echo json_encode([
+            'success' => $success && $user->isLoggedIn() && $user->isAllowed('Admin'),
+        ]);
+        $this->terminate();
+    }
+
+    public function actionLogout()
+    {
+        $this->getUser()->logout(true);
+
+        echo json_encode([
+            'success'=>true,
+        ]);
+        $this->terminate();
+    }
+
+    public function actionCheckUser()
+    {
+        $user = $this->getUser();
+
+        echo json_encode([
+            'success' => $user->isLoggedIn() && $user->isAllowed('Admin'),
+        ]);
+        $this->terminate();
     }
 }

@@ -35,10 +35,7 @@ abstract class AdminFormPresenter extends AdminPresenter
     {
         $this->template->total = $total = 100; //$this->repo->countBy();
         $this->template->limit = $limit;
-        $this->template->all_items = $this->repo->findBy([], [], $limit, ($page-1) * $limit);
-
-        dump(($this->template->all_items));
-die();
+        $this->template->all_items = $this->db->query('select * from TARIFF_SPACE %lmt', 10)->fetchAll();
     }
 
     public function renderDetail($id)
@@ -104,17 +101,6 @@ die();
     protected function preSave($item, $data, $em)
     {
     }
-
-    public function injectEntityFactory(EntityFactory $factory)
-    {
-        $this->entityFactory = $factory;
-    }
-
-    public function injectAuthors(Authors $repo)
-    {
-        $this->authors = $repo;
-    }
-
     abstract protected function getEntityName();
     abstract protected function getFormName();
 }

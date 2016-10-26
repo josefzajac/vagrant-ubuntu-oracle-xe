@@ -20,9 +20,7 @@ class Acl extends Permission
     private function defineRoles()
     {
         $this->addRole('guest');
-        $this->addRole(User::REGISTERED, 'guest');
-        $this->addRole(User::AUTHOR, User::REGISTERED);
-        $this->addRole(User::ADMIN, User::AUTHOR);
+        $this->addRole('administrator', 'guest');
     }
 
     private function defineResources()
@@ -32,6 +30,6 @@ class Acl extends Permission
 
     private function definePrivileges()
     {
-        $this->allow(User::ADMIN, 'Admin');
+        $this->allow('administrator', 'Admin');
     }
 }

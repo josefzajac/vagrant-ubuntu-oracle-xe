@@ -1,9 +1,0 @@
-<div class="row">
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" n:foreach="$competitions as $competition" class="panel panel-default">
-        <a n:href="Competition:gallery competition_slug=>$competition->slug" class="text-center">
-            <div class="panel-heading"><h3>{$competition->name}</h3></div>
-            <img n:if="$competition->getSquareImage()" class="center-block" width="250px"
-                 n:src="$competition->getSquareImage()->getNamespace(), $competition->getSquareImage()->getName()"/>
-        </a>
-    </div>
-</div>

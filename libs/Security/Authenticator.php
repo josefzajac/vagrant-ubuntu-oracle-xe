@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use App\Model\Repository\Users;
 use Nette\Object;
 use Nette\Security\AuthenticationException;
 use Nette\Security\IAuthenticator;
@@ -13,17 +12,17 @@ use Nette\Security\Passwords;
 class Authenticator extends Object implements IAuthenticator
 {
     /**
-     * @var Users
+     * @var array
      */
-    private $users;
+    private $parameters;
 
     /**
      * Authenticator constructor.
-     * @param Users $users
+     * @param Container $container
      */
-    public function __construct(Users $users)
+    public function __construct(\Nette\DI\Container $container)
     {
-        $this->users = $users;
+        $this->parameters = $container->getParameters();
     }
 
     /**
@@ -37,16 +36,14 @@ class Authenticator extends Object implements IAuthenticator
     {
         list($email, $password) = $credentials;
 
-        $user = $this->users->findByEmail($email);
-
-        if (!$user) {
+        if (!isset($this->parameters['users'][$email])) {
             throw new AuthenticationException('User not found.');
         }
 
-        if (!Passwords::verify($password, $user->password)) {
+        if ($this->parameters['users'][$email] !== $password) {
             throw new AuthenticationException('Invalid password.');
         }
 
-        return new Identity($user->getId(), $user->getRoles(), $user->export());
+        return new Identity($email, ['administrator']);
     }
 }

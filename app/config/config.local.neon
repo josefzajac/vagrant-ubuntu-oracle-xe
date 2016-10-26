@@ -1,16 +1,17 @@
 parameters:
     admin_mail: josef.zajac@gmail.com
+    database:
+        host: localhost
+        username: tester
+        password: 1234
+        database: localhost:1521/XE
+        driver: oracle
+        lazy: TRUE
+    users:
+        system: 1d0258c2440a8d19e716292b231e3190
+        admin2: superadmin
 
-doctrine:
-    user: tester
-    password: 1234
-    port: 1521
-    dbname: system
-    driver: oci8
-    servicename: XE
-    connectstring: localhost:1521/XE
-
-services:
-    nette.latteFactory:
-        setup:
-            - setTempDirectory(null)
+#services:
+#    nette.latteFactory:
+#        setup:
+#            - setTempDirectory(null)

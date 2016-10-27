@@ -19,6 +19,8 @@ abstract class AdminPresenter extends BasePresenter
             \Tracy\Debugger::enable(\Tracy\Debugger::DEBUG);
         }
 
+        $this->template->menuEntities = $this->menuEntities;
+
         ModelStorage::$db = $this->db;
         $this->template->lastVersion = 1;
 
@@ -29,6 +31,7 @@ abstract class AdminPresenter extends BasePresenter
 
         $user = $this->getUser();
 
+        $this->template->model = $this->getParameter('model');
 
 //        if (!$user->isLoggedIn()) {
 //            $this->redirect(':Frontend:Login:login', ['return_url' => $this->getHttpRequest()->getUrl()->getAbsoluteUrl()]);

@@ -1,1 +1,64 @@
-{extends "../@admin.latte"}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Administrace</title>
+
+    <link rel="stylesheet" type="text/css" href="{$basePath}/js/extjs/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="{$basePath}/js/extjs/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/extjs/ext-all.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/extjs/Ext.ux.util.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/extjs/Ext.ux.grid.Search.js"></script>
+    <script type="text/javascript" src="{$basePath}/js/admin/login.js?{$lastVersion}"></script>
+    <script type="text/javascript" src="{$basePath}/js/admin/layout2.js?{$lastVersion}"></script>
+
+    <script type="text/javascript" src="{$basePath}/js/admin/grid.js?{$lastVersion}"></script>
+    <script type="text/javascript" src="{$basePath}/js/admin/form.js?{$lastVersion}"></script>
+
+    <style type="text/css">
+        body {
+            background: url("/background.jpg") repeat;
+
+    </style>
+
+    <script type="text/javascript">
+        baseUri = '{!$baseUri}/admin/';
+    </script>
+    <style type="text/css">
+        .x-form-file-wrap {
+            position: relative;
+            height: 22px;
+        }
+
+        .x-form-file-wrap .x-form-file {
+            position: absolute;
+            right: 0;
+            -moz-opacity: 0;
+            filter: alpha(opacity:0);
+            opacity: 0;
+            z-index: 2;
+            height: 22px;
+        }
+
+        .x-form-file-wrap .x-form-file-btn {
+            position: absolute;
+            right: 0;
+            z-index: 1;
+        }
+
+        .x-form-file-wrap .x-form-file-text {
+            position: absolute;
+            left: 0;
+            z-index: 3;
+            color: #777;
+        }
+
+        .upload-icon {
+            background: url({$basePath}+ '/_public/js/extjs/examples/shared/icons/fam/image_add.png' ) no-repeat 0 0 !important;
+        }
+
+    </style>
+</head>
+<body>
+</body>
+</html>

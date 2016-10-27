@@ -1,1 +1,168 @@
 {extends "./@admin_layout.latte"}
+{block content}
+<!-- Site wrapper -->
+<div class="wrapper">
+
+<header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>P</b>3</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>Praha</b>3</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#" data-toggle="control-sidebar"> <i class="fa fa-gears"></i> Administrator</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- =============================================== -->
+
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="treeview active">
+
+                <ul class="treeview-menu">
+                    {foreach $menuEntities as $ent => $label}
+                    <li {ifCurrent :Admin:Proxy:read, model=>$ent, returnType=>'html'}class="active"{/ifCurrent}><a n:href=":Admin:Proxy:read, model=>$ent, returnType=>'html'"><i class="fa fa-circle-o"></i>{$label}</a></li>
+                    {/foreach}
+                </ul>
+
+            </li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+
+<!-- =============================================== -->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        {include mainHeader}
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
+            {$flash->message}
+        </div>
+        {include mainContent}
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 1.0
+    </div>
+    <strong>Copyright &copy; 2014-2015 <a href="http://www.praha3.cz/"></a>Praha 3</strong>
+</footer>
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+        <li class=""><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <!-- Home tab content -->
+        <div class="tab-pane " id="control-sidebar-home-tab">
+            <h3 class="control-sidebar-heading">Heading</h3>
+            <ul class="control-sidebar-menu">
+                <li>
+                    <a href="javascript::;">
+                        <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+                        <div class="menu-info">
+                            <h4 class="control-sidebar-subheading">Subheader</h4>
+
+                            <p>Description</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <!-- /.control-sidebar-menu -->
+
+            <h3 class="control-sidebar-heading">Heading</h3>
+            <ul class="control-sidebar-menu">
+                <li>
+                    <a href="javascript::;">
+                        <h4 class="control-sidebar-subheading">
+                            Progress
+                            <span class="label label-danger pull-right">70%</span>
+                        </h4>
+
+                        <div class="progress progress-xxs">
+                            <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <!-- /.control-sidebar-menu -->
+
+        </div>
+        <!-- /.tab-pane -->
+        <!-- Stats tab content -->
+        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+        <!-- /.tab-pane -->
+        <!-- Settings tab content -->
+        <div class="tab-pane" id="control-sidebar-settings-tab">
+            <form method="post">
+                <h3 class="control-sidebar-heading">Heading</h3>
+
+                <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Checkbox
+                        <input type="checkbox" class="pull-right" checked>
+                    </label>
+
+                    <p>
+                        Checkbox description
+                    </p>
+                </div>
+                <!-- /.form-group -->
+
+                <h3 class="control-sidebar-heading">Heading</h3>
+
+                <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        Icon link
+                        <a href="javascript:::" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                    </label>
+                </div>
+                <!-- /.form-group -->
+            </form>
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+</aside>
+<!-- /.control-sidebar -->
+<!-- Add the sidebar's background. This div must be placed
+     immediately after the control sidebar -->
+<div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->

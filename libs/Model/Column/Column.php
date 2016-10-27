@@ -6,7 +6,6 @@ class Column
     /* db base info */
     private $name;
     private $type;
-    private $lenght;
     private $default;
 
     /* db index info */
@@ -32,7 +31,6 @@ class Column
         $name,
         $type = 'varchar',
         $default = '',
-        $lenght = 255,
         $isnull = false,
         $primary = false,
         $unique = false,
@@ -46,7 +44,6 @@ class Column
 
         $this->name = $name;
         $this->type = $type;
-        $this->lenght = $lenght;
         $this->default = $default;
 
         $this->isnull = $isnull;
@@ -120,11 +117,6 @@ class Column
     public function getType()
     {
         return $this->type;
-    }
-
-    public function getLenght()
-    {
-        return $this->lenght;
     }
 
     public function getIsNull()

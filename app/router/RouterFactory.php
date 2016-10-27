@@ -29,7 +29,7 @@ class RouterFactory
     private static function createAdminRouter($moduleName, $routePrefix)
     {
         $router = new RouteList($moduleName);
-        $router[] = self::route($routePrefix . '/<presenter>/<action>[/<model>]', 'Homepage:default');
+        $router[] = self::route($routePrefix . '/<presenter>/<action>[/<model>]', 'Homepage:start');
 
         return $router;
     }

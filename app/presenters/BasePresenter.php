@@ -8,6 +8,7 @@ class BasePresenter extends Presenter
 {
     const DEFAULT_LANGUAGE = 'cs';
 
+
     /** @persistent */
     public $locale;
 
@@ -20,6 +21,13 @@ class BasePresenter extends Presenter
      * @var array
      */
     protected $parameters;
+
+    /**
+     * Config Menu
+     *
+     * @var array
+     */
+    protected $menuEntities = [];
 
     /**
      */
@@ -60,5 +68,6 @@ class BasePresenter extends Presenter
     public function injectContainer(\Nette\DI\Container $container)
     {
         $this->parameters = $container->getParameters();
+        $this->menuEntities = $this->parameters['menu_entities'];
     }
 }

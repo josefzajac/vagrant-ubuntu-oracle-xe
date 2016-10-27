@@ -20,6 +20,7 @@ class BaseModel
     const DATE_FORMAT = 'd-m-y';
 
     public $table;
+    public $label;
 
     public $modelsPaths = [
         '../app/config/models/',
@@ -65,6 +66,7 @@ class BaseModel
     {
         $xml = @simplexml_load_file($file);
 
+        $this->label = (string) $xml->label;
         foreach ($xml->column as $column) {
             $baseColumn = $this->addColumn(
                 new Column(
@@ -72,7 +74,6 @@ class BaseModel
                     (string)$column['name'],
                     (string)$column['type'],
                     (string)$column['default'],
-                    (string)$column['lenght'],
                     $column['isnull'] == 'true',
                     $column['primary'] == 'true',
                     $column['unique'] == 'true',

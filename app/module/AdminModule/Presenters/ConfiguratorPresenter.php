@@ -10,17 +10,17 @@ class ConfiguratorPresenter extends AdminPresenter
 {
     public function actionCreateGrid($model, $id)
     {
-        $response = ['success' => true];
-        $response['columns']    = [];
-        $response['fields']     = [];
-        $response['conditions'] = [];
+        $modelObject = ModelStorage::getModelByModelClass($model);
+
+        $responseData = ['success' => true, 'modelObject' => $modelObject, 'model' => $model];
+        $responseData['columns']    = [];
+        $responseData['fields']     = [];
+        $responseData['conditions'] = [];
         $readParams = [];
 
-        $object = ModelStorage::getModelByModelClass($model);
-
-        foreach ($object->getColumns() as $column) {
+        foreach ($modelObject->getColumns() as $column) {
             if ($column->grid()) {
-                $response['columns'][] = array
+                $responseData['columns'][] = array
                 (
                     'id' => $column->getName(),
                     'header' => $column->getLabel(),
@@ -31,7 +31,7 @@ class ConfiguratorPresenter extends AdminPresenter
                     'filterable' => true
                 );
 
-                $response['fields'][] = $column->getName();
+                $responseData['fields'][] = $column->getName();
             }
 
             if ($value = $this->getParameter($column->getName(), $this->getRequest()->getPost($column->getName()))) {
@@ -39,40 +39,38 @@ class ConfiguratorPresenter extends AdminPresenter
             }
         }
 
-        $response['proxy']['readUrl'] = $this->link('Proxy:read', array_merge(['model' => $model], $readParams));
-        $response['proxy']['writeUrl'] = $this->link('Proxy:write', ['model' => $model]);
-        $response['proxy']['deleteUrl'] = $this->link('Proxy:delete', ['model' => $model]);
+        $responseData['proxy']['readUrl'] = $this->link('Proxy:read', array_merge(['model' => $model], $readParams));
+        $responseData['proxy']['writeUrl'] = $this->link('Proxy:write', ['model' => $model]);
+        $responseData['proxy']['deleteUrl'] = $this->link('Proxy:delete', ['model' => $model]);
 
-        echo json_encode($response);
+        echo json_encode($responseData);
         $this->terminate();
     }
 
-    public function actionCreateForm($model, $id)
+    public function actionCreateForm($model, $id, $returnType = 'JSON')
     {
-        // is authenticated
+        $modelObject = ModelStorage::getModelByModelClass($model);
 
-        $response = ['success' => true, 'columns' => [], 'grids' => []];
+        $responseData = ['success' => true, 'columns' => [], 'grids' => [], 'modelObject' => $modelObject, 'model' => $model];
         $panels = [];
 
 
-        $object = ModelStorage::getModelByModelClass($model);
-
         $data = false;
         if (!is_null($id)) {
-            $data = $object->find(
-                (new ModelFilter(ModelFilter::FetchSingle))->addCondition($object->idColumn, '=', $id)
+            $data = $modelObject->find(
+                (new ModelFilter(ModelFilter::FetchSingle))->addCondition($modelObject->idColumn, '=', $id)
             );
         }
 
-        foreach ($object->getColumns() as $column) {
+        foreach ($modelObject->getColumns() as $column) {
             /** @var \App\Model\Column\Column $column */
             if (!$column->getFieldType()) {
                 continue;
             }
 
             $item = [
-                'id' => $object->table . '_' . $column->getName() . '_' . $id,
-                'name' => $object->table . '_' . $column->getName(),
+                'id' => $modelObject->table . '_' . $column->getName() . '_' . $id,
+                'name' => $modelObject->table . '_' . $column->getName(),
                 'fieldLabel' => $column->getLabel(),
                 'allowBlank' => !$column->getIsRequired(),
                 'value' => $data && array_key_exists($column->getName(), $data) ? $data[$column->getName()] : $this->getParameter($column->getName(), $column->getDefault())
@@ -81,11 +79,11 @@ class ConfiguratorPresenter extends AdminPresenter
             switch (String::lower($column->getFieldType())) {
                 case 'grid'        :
                     if (!is_null($id)) {
-                        $response['grids'][] = [
+                        $responseData['grids'][] = [
                             'text' => $column->getLabel(),
-                            'id' => $object->table . '_' . $column->getName() . '_gridApp',
+                            'id' => $modelObject->table . '_' . $column->getName() . '_gridApp',
                             'app' => $column->getConstraint()->model,
-                            'renderTo' => $object->table . '_' . $column->getName(),
+                            'renderTo' => $modelObject->table . '_' . $column->getName(),
                             'condition' => [$column->getConstraint()->id => $id],
                         ];
                     }
@@ -179,7 +177,7 @@ class ConfiguratorPresenter extends AdminPresenter
             if ($column->getPanel()) {
                 if (!array_key_exists(String::webalize($column->getPanel()), $panels)) {
                     $panels[String::webalize($column->getPanel())] = [
-                        'id' => $object->table . '_' . $column->getName() . '_panel',
+                        'id' => $modelObject->table . '_' . $column->getName() . '_panel',
                         'title' => $column->getPanel(),
                         'layout' => 'form',
                         'autoHeight' => true,
@@ -199,7 +197,7 @@ class ConfiguratorPresenter extends AdminPresenter
                         = $item;
                 }
             } else {
-                $response['columns'][] = $item;
+                $responseData['columns'][] = $item;
             }
         }
 
@@ -208,7 +206,8 @@ class ConfiguratorPresenter extends AdminPresenter
         }
 
         if (count($panels) > 0) {
-            $response['columns'][] = [
+            $responseData['columns'][] = [
+                'fieldLabel' => 'Tab1::',
                 'xtype' => 'tabpanel',
                 'defaults' => ['bodyStyle' => 'padding:10px'],
                 'enableTabScroll' => true,
@@ -219,9 +218,25 @@ class ConfiguratorPresenter extends AdminPresenter
         }
 
 
-        $response['proxy'] = $this->link('Proxy:write', ['model' => $model, 'id' => $id]);
+        $responseData['proxy'] = $this->link('Proxy:write', ['model' => $model, 'id' => $id]);
 
-        echo json_encode($response);
-        $this->terminate();
+        if ($this->returnJson($returnType)) {
+            echo json_encode($responseData);
+            $this->terminate();
+        }
+
+        if ($this->returnArray($returnType)) {
+            return $responseData;
+        }
+    }
+
+    protected function returnJson($returnType)
+    {
+        return $returnType == 'JSON';
+    }
+
+    protected function returnArray($returnType)
+    {
+        return $returnType == 'ARRAY';
     }
 }

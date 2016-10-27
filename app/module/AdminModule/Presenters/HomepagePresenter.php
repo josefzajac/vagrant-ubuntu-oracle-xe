@@ -8,6 +8,5 @@ class HomepagePresenter extends AdminPresenter
 {
     public function actionDefault()
     {
-//        $this->redirect(':Admin:TariffSpace:default');
     }
 }

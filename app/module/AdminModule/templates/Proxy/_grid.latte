@@ -1,0 +1,16 @@
+<div class="box-body table-responsive no-padding">
+    <table class="table table-hover">
+        <tr>
+            {foreach $gridData['keys'] as $k}
+                <th>{$k}</th>
+            {/foreach}
+            <th>Detail</th>
+        </tr>
+        <tr n:foreach="$gridData['items'] as $item">
+            {foreach $item as $k => $v}
+                <td>{!$v}</td>
+            {/foreach}
+            <td><a href="{link detail, id => $item[$gridData['modelObject']->idColumn]->getValue(), model => $gridData['model']}">DETAIL</a></td>
+        </tr>
+    </table>
+</div>

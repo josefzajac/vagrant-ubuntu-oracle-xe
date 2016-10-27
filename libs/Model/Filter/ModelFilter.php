@@ -200,78 +200,6 @@ class ModelFilter implements IModelFilter
         return $this;
     }
 
-    public function getOrderByClausule()
-    {
-        $aaa = $this->getSortBy();
-        if ($aaa) {
-            return ' ORDER BY ' . implode(
-                ' , ',
-                array_map(
-                    function ($v) use ($aaa) {
-                        return ' `' . array_search($v, $aaa) . '` ' . $v;
-                    },
-                    $aaa
-                )
-            );
-        }
-        return '';
-    }
-
-    public function getWhereClausule($prefix = null)
-    {
-        $output = [];
-        foreach ($this->getConditions() as $condition) {
-            if (!is_null(Arrays::getValueByIndexName($condition, 'value'))) {
-                if (Arrays::getValueByIndexName($condition, 'type') == ModelFilter::ConditionIn) {
-                    $output[] = sprintf(
-                        '%s IN (%s)',
-                        $this->prefix($prefix, Arrays::getValueByIndexName($condition, 'column')),
-                        implode(
-                            ',',
-                            array_map(
-                                function ($x) {
-                                    return sprintf('"%s"', $x);
-                                },
-                                Arrays::getValueByIndexName($condition, 'value')
-                            )
-                        )
-                    );
-                } elseif (preg_match('|(DATE_FORMAT)|', Arrays::getValueByIndexName($condition, 'value'))) {
-                    $output[] = sprintf(
-                        '`%s` %s %s',
-                        $this->prefix($prefix, Arrays::getValueByIndexName($condition, 'column')),
-                        Arrays::getValueByIndexName($condition, 'type', '='),
-                        Arrays::getValueByIndexName($condition, 'value')
-                    );
-                } else {
-                    $output[] = sprintf(
-                        '`%s` %s "%s"',
-                        $this->prefix($prefix, Arrays::getValueByIndexName($condition, 'column')),
-                        Arrays::getValueByIndexName($condition, 'type', '='),
-                        Arrays::getValueByIndexName($condition, 'value')
-                    );
-                }
-            } else {
-                $output[] = sprintf(
-                    '`%s` %s',
-                    $this->prefix($prefix, Arrays::getValueByIndexName($condition, 'column')),
-                    Arrays::getValueByIndexName($condition, 'type', ' IS NULL')
-                );
-            }
-        }
-
-        return implode(' AND ', $output);
-    }
-
-    private function prefix($prefix, $column)
-    {
-        if (null === $prefix) {
-            return $column;
-        }
-
-        return sprintf('%s.%s', $prefix, $column);
-    }
-
     public function getId()
     {
         foreach ($this->conditions as $c) {
@@ -281,4 +209,18 @@ class ModelFilter implements IModelFilter
         }
         return false;
     }
+
+    protected $generalUsed = false;
+
+    public function setGeneral(ModelFilter $general)
+    {
+        $this->merge($general);
+        $this->generalUsed = true;
+    }
+
+    public function generalUsed()
+    {
+        return $this->generalUsed;
+    }
+
 }

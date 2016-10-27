@@ -10,6 +10,7 @@
     {block css}
         <link href="{$basePath}/css/admin/bstrap.css" rel="stylesheet">
         <link href="{$basePath}/css/admin/app.css" rel="stylesheet">
+        <link href="{$basePath}/css/admin/plugins/datatables/datatables.bootstrap.css" rel="stylesheet">
     {/block}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
@@ -21,11 +22,10 @@
     <![endif]-->
 </head>
 <body class="hold-transition skin-green fixed sidebar-mini">
+
 {include content}
 
 {block js}
-    <script src="{$basePath}/js/admin/libs.js"></script>
-    <script src="{$basePath}/js/admin/app.js"></script>
 {/block}
 {ifset jsBlock}{include jsBlock}{/ifset}
 </body>

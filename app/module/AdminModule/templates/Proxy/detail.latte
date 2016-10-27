@@ -13,30 +13,15 @@
             </div>
             <div class="box-body form-horizontal">
                 {foreach $columns as $item}
-                    {if $item['xtype'] !== 'tabpanel'}
                     <div class="form-group">
                         <div class="col-sm-3 control-label"><label for="frm-editItemForm-name">{$item['fieldLabel']}</label></div>
                         <div class="col-sm-9">{$item['value']}</div>
                     </div>
-                    {/if}
                 {/foreach}
-                {foreach $grids as $g}
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                            <tr>
-                                {foreach $g['keys'] as $k}
-                                    <th>{$k}</th>
-                                {/foreach}
-                                <th>Detail</th>
-                            </tr>
-                            <tr n:foreach="$g['items'] as $item">
-                                {foreach $item as $k => $v}
-                                    <td>{$v}</td>
-                                {/foreach}
-                                <td><a href="{link detail, id => $item->{$g['modelObject']->idColumn}, model => $g['model']}">DETAIL</a></td>
-                            </tr>
-                        </table>
-                    </div>
+                {foreach $grids as $gridData}
+                    {continueIf !count($gridData['items'])}
+
+                    {include _grid.latte, 'gridData' => $gridData}
                 {/foreach}
             </div>
         </div>

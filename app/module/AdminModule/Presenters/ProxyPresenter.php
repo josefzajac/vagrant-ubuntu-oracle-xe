@@ -2,6 +2,7 @@
 namespace App\AdminModule\Presenters;
 
 use App\Model\BaseModel;
+use App\Model\Column\GrouppedColumn;
 use App\Model\Filter\ModelFilter;
 use App\Model\ModelStorage;
 use Arrays;
@@ -42,12 +43,12 @@ class ProxyPresenter extends ConfiguratorPresenter
         foreach($responseData['grids'] as $k => $c) {
             $responseData['grids'][$k] = $this->actionRead($c['app'], 'ARRAY', $c['condition']);
         }
-//dump($responseData['grids']);die();
+
         foreach ($responseData as $k => $v)
             $this->template->{$k} = $v;
     }
 
-    public function actionRead($model, $returnType = 'JSON', $condition = [])
+    public function actionRead($model, $returnType = '', $condition = [])
     {
         try {
             $this->template->modelObject = $modelObject = ModelStorage::getModelByModelClass($model);
@@ -58,7 +59,6 @@ class ProxyPresenter extends ConfiguratorPresenter
             $defaults->dir    = 'DESC';
             $defaults->offset = 0;
             $defaults->limit  = 30;
-
 
             $sort   = $this->getParameter('sort', $defaults->sort);
             $dir    = $this->getParameter('dir', $defaults->dir);
@@ -74,31 +74,37 @@ class ProxyPresenter extends ConfiguratorPresenter
                     || $value = (isset($condition[$column->getName()]) ? $condition[$column->getName()] : null) ) {
                     $modelFilter->addCondition($column->getName(), '=', $value);
                 }
-                // load data to translage for grid
-                if (!is_null($constraint = $column->getConstraint()) && $column->grid() && !array_key_exists($column->getName(), $columnData)) {
-                    $smallFilter = new ModelFilter();
-                    if (@$constraint->groupby) {
-                        $smallFilter->addGroupBy($constraint->groupby);
-                    }
-                    $columnData[$column->getName()] =
-                        ModelStorage::getModelByModelClass($constraint->model)
-                            ->findForSelect($constraint->key, $constraint->label, $smallFilter);
-                }
+//
+//                if (!is_null($constraint = $column->getConstraint()) && $column->grid() && !array_key_exists($column->getName(), $columnData)) {
+//                    $smallFilter = new ModelFilter();
+//
+//                    if (@$constraint->groupby) {
+//                        $smallFilter->addGroupBy($constraint->groupby);
+//                    }
+//                    $columnData[$column->getName()] =
+//                        ModelStorage::getModelByModelClass($constraint->model)
+//                            ->findForSelect($constraint->key, $constraint->label, $smallFilter);
+//                }
             }
+
 
             if ($q = $this->getParameter('query', null)) {
                 $modelFilter->addCondition($modelObject->idColumn, 'LIKE', '%' . String::lower($q) . '%');
             }
+
             $responseData = [
                 'totalCount' => $modelObject->getTotalRecords($modelFilter),
-                'keys'       => [],
+                'keys'       => $modelObject->getColumns()->filterAttr('grid')->getAttr('name')->getValues(),
                 'items'      => [],
                 'model'      => $model,
                 'modelObject' => $modelObject,
+                'page' => floor($offset / $limit)+1,
+                'pages' => 0,
                 'gridParams' => [
                     'sort' => $sort,
                     'dir' => $dir,
                     'limit' => $limit,
+                    'modelObject' => $modelObject,
                     'start' => $offset,
                     'q' => $q,
                     'totalCount' => 0,
@@ -110,49 +116,42 @@ class ProxyPresenter extends ConfiguratorPresenter
             $responseData['pages'] = $responseData['gridParams']['pages'] = ceil($responseData['totalCount']/$limit);
 
             foreach ($modelObject->find($modelFilter->setLimit($offset, $limit)) as $item) {
-                foreach ($columnData as $key => $translationRow) {
-                    $item[$key] = Arrays::getValueByIndexName($translationRow, $item[$key], $item[$key]);
-                }
+//                foreach ($columnData as $key => $translationRow) {
+//                    $item[$key] = Arrays::getValueByIndexName($translationRow, $item[$key], $item[$key]);
+//                }
 
-                $responseData['keys'] = [];
-                foreach ($item as $k => $v) {
-                    $responseData['keys'][] = $k;
-                    if ($v instanceof \DateTime) {
-                        $item[$k] = $v->format(BaseModel::DATE_FORMAT);
+                $newItem = [];
+                foreach ($modelObject->getColumns()->filterAttr('grid') as $c) {
+                    $c = clone $c;
+                    $newItem[$c->getName()] = $c;
+
+                    if ($c instanceof GrouppedColumn) {
+                        $constraint = $c->getConstraint();
+                        $x = $this->actionRead($constraint->model, 'ARRAY', [$constraint->id => $item->{$modelObject->idColumn}]);
+
+                        $c->setValue($x['items']);
+                    } else {
+                        $c->setValue($item[$c->getName()]);
                     }
+
                 }
 
-                if ($this->returnJson($returnType)) {
-                    $item['id'] = $item[$modelObject->idColumn];
-                }
-                $jsonData[] = $item;
+                $jsonData[] = $newItem;
             }
 
             $responseData['items'] = $jsonData;
 
-            if ($this->returnJson($returnType)) {
-                echo $this->getParameter('callback') . '(' .
-                    json_encode($responseData) . ')';
-            }
         } catch (Exception $e) {
-            if ($this->returnJson($returnType)) {
-                echo $this->getParameter('callback') . '(' . json_encode([
-                    'totalCount' => 1,
-                    'items' => [['customer_id' => $e->getMessage()]]]) . ')';
-            }
+
             throw $e;
         }
 
 
-        if ($this->returnJson($returnType)){
-            $this->terminate();
-        }
         if ($this->returnArray($returnType)){
             return $responseData;
         }
 
-        foreach ($responseData as $k => $v)
-            $this->template->{$k} = $v;
+        $this->template->gridData = $responseData;
     }
 
     public function convertQuery($q)

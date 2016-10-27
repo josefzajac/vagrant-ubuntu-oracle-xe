@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <table label="Product">
-    <column label="Product_Id" name="PRODUCT_ID" is_id="true" type="varchar" isnull="false" default="0" field="text" grid="true"/>
-    <column label="Hist_No" name="HISTNO" type="INT" isnull="false" default="0" field="text" grid="true"/>
-    <column label="Valid_From" name="VALID_FROM" type="date" isnull="false" default="0" field="date" grid="true"/>
-    <column label="Tech_Status" name="TECHNICAL_STATUS" type="varchar" isnull="false" default="0" field="text" grid="true"/>
-    <column label="Account_Id" name="ACCOUNT_ID" type="varchar" isnull="false" default="0" field="text" grid="true"/>
-    <column label="Status" name="STATUS" type="varchar" isnull="false" default="0" required="false" field="checkbox" grid="true"/>
-    <column label="PRODUCT_PARAMETER" name="parameter_items" field="GRID" constraint="{'model':'ProductParameter', 'id':'PRODUCT_ID'}" required="false" panel="Product_Parameter"/>
-    <column label="PRODUCT_LINK" name="link_items" field="GRID" constraint="{'model':'ProductLink', 'id':'PRODUCT_ID'}" required="false" panel="Product_Link"/>
+    <column label="Product_Id" name="PRODUCT_ID" is_id="true" type="varchar" default="0" field="text" grid="true"/>
+    <column label="Hist_No" name="HISTNO" type="INT" default="0" field="text" grid="false"/>
+    <column label="Valid_From" name="VALID_FROM" type="date" default="0" field="date" grid="true"/>
+    <column label="Tech_Status" name="TECHNICAL_STATUS" type="varchar" default="0" field="text" grid="true"/>
+    <column label="Status" name="STATUS" type="varchar" default="0" required="false" field="checkbox" grid="true"/>
+    <column label="Account_Id" name="ACCOUNT_ID" type="varchar" default="0" field="text" />
+    <column label="PRODUCT_PARAMETER" name="parameter_items" type="groupped" constraint="{'model':'ProductParameter','id':'PRODUCT_ID'}" grid="true" extra="KEY,VALUE"/>
+    <column label="PRODUCT_LINK" name="link_items" field="GRID" constraint="{'model':'ProductLink', 'id':'PRODUCT_ID'}" />
 </table>

@@ -5,6 +5,9 @@ namespace App\AdminModule\Presenters;
 use App\Presenters\BasePresenter;
 use App\Model\ModelStorage;
 use Nette;
+use Nette\Application\UI\Form;
+use Tomaj\Form\Renderer\BootstrapRenderer;
+use Tracy\Dumper;
 
 abstract class AdminPresenter extends BasePresenter
 {
@@ -15,74 +18,72 @@ abstract class AdminPresenter extends BasePresenter
     {
         parent::startup();
 
-        if ($this->getParameter('callback')) {
-            \Tracy\Debugger::enable(\Tracy\Debugger::DEBUG);
+        if (!$this->getUser()->isAllowed('Admin') && ! in_array($this->action, ['loginpage', 'login'])) {
+            $this->flashMessage('tr.admin.access_not_granted', 'danger');
+            $this->redirect('Homepage:loginpage', ['return_url' => $this->link('this')]);
         }
-
-        $this->template->menuEntities = $this->menuEntities;
 
         ModelStorage::$db = $this->db;
-        $this->template->lastVersion = 1;
-
-
-//        $panel = new \Dibi\Bridges\Tracy\Panel;
-//        $panel->register($this->db);
-
-
-        $user = $this->getUser();
 
         $this->template->model = $this->getParameter('model');
-
-//        if (!$user->isLoggedIn()) {
-//            $this->redirect(':Frontend:Login:login', ['return_url' => $this->getHttpRequest()->getUrl()->getAbsoluteUrl()]);
-//        }
-//
-//        if (!$user->isAllowed('Admin')) {
-//            $this->flashMessage('tr.admin.access_not_granted', 'danger');
-//            $this->redirect(':Frontend:Frontend:');
-//        }
+        $this->template->menuEntities = $this->menuEntities;
+        $this->template->lastVersion = 1;
     }
 
-    public function actionLogin($login, $password)
+
+    protected function createComponentLoginForm()
     {
+        $form = new Form();
+        $form->setRenderer(new BootstrapRenderer);
+        $form->addText('login', 'login')
+            ->setRequired(true);
+        $form->addPassword('password', 'password:')
+            ->setType('password')
+            ->setRequired(true);
+        $form->addHidden('return_url', $this->getParameter('return_url'));
+        $form->addSubmit('signin', 'Sign in');
+        $form->onSuccess[] = [$this, 'loginFormSucceeded'];
+
+        return $form;
+    }
+
+    public function loginFormSucceeded(Form $form = null, $values)
+    {
+        $message = 'tr.user.success';
         $success = true;
-        try {
-            $this->getUser()->login($login, $password);
+        try{
+            $this->getUser()->login($values->login, $values->password);
         } catch (Nette\Security\AuthenticationException $e) {
             $success = false;
+            switch($e->getMessage()) {
+                case 'User not found.'   : $message = 'tr.user.not_found'; break;
+                case 'Invalid password.' : $message = 'tr.user.wrong_pass'; break;
+                default: $message = 'tr.user.error'; break;
+            }
         }
+        $this->flashMessage($message, $success ? 'info' : 'danger');
 
-        $user = $this->getUser();
-
-        echo json_encode(
-            [
-                'success' => $success && $user->isLoggedIn() && $user->isAllowed('Admin'),
-            ]
-        );
-        $this->terminate();
+        if ($returnUrl = $form && isset($form['return_url']) ? $form['return_url']->getValue() : null) {
+            $this->redirectUrl($returnUrl);
+        } else {
+            $this->redirect('this');
+        }
     }
 
-    public function actionLogout()
+    /**
+     * @param  Nette\Application\IResponse
+     * @return void
+     */
+    protected function shutdown($response)
     {
-        $this->getUser()->logout(true);
+        foreach(range(1,10) as $i) {
+            if(!$h = $this->getHttpResponse()->getHeader('X-Wf-dibi-1-1-d'.$i)) continue;
+            $h = json_decode(substr($h, 1, strlen($h)-2));
+            if (!isset($h[1])) continue;
 
-        echo json_encode(
-            [
-                'success' => true,
-            ]
-        );
-        $this->terminate();
-    }
-
-    public function actionCheckUser()
-    {
-        $user = $this->getUser();
-
-        echo json_encode(
-            [
-                'success' => $user->isLoggedIn() && $user->isAllowed('Admin'),
-            ]
-        );
-        $this->terminate();
+            foreach($h[1] as $r) {
+                \Tracy\Debugger::barDump($r[1], null, [Dumper::TRUNCATE => 1000]);
+            }
+        }
     }
 }

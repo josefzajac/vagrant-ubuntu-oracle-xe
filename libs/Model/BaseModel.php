@@ -10,15 +10,15 @@
 namespace App\Model;
 
 use App\Model\Column\Column;
+use App\Model\Column\Factory;
 use App\Model\Filter\IModelFilter;
 use App\Model\Filter\ModelFilter;
 use Arrays;
+use Collections\ColumnCollection;
 use Dibi\Fluent;
 
 class BaseModel
 {
-    const DATE_FORMAT = 'd-m-y';
-
     public $table;
     public $label;
 
@@ -31,12 +31,14 @@ class BaseModel
 
     public $idColumn = 'id';
 
-    protected
-        $filter = 0,
-        $singleFilter = 0,
-        $generalFilter = null,
-        $columns = [],
-        $serializable = [];
+    /** @var \Collections\ColumnCollection */
+    protected $columns;
+
+    /** @var \App\Model\Filter\ModelFilter|null  */
+    protected $generalFilter;
+
+    /** @var array */
+    protected    $serializable = [];
 
     /**
      * Constructor
@@ -45,9 +47,10 @@ class BaseModel
      */
     public function __construct($table, $generalFilter = null)
     {
-        $this->filter = new ModelFilter();
-        $this->singleFilter = new ModelFilter('SINGLE');
-        $this->generalFilter = $generalFilter;
+        $this->columns = new ColumnCollection();
+        if ($generalFilter) {
+            $this->generalFilter = $generalFilter;
+        }
         $this->table = $table;
 
         foreach ($this->modelsPaths as $path) {
@@ -69,14 +72,11 @@ class BaseModel
         $this->label = (string) $xml->label;
         foreach ($xml->column as $column) {
             $baseColumn = $this->addColumn(
-                new Column(
+                Factory::create($column['type'])->setValues(
                     (string)$column['label'],
                     (string)$column['name'],
                     (string)$column['type'],
                     (string)$column['default'],
-                    $column['isnull'] == 'true',
-                    $column['primary'] == 'true',
-                    $column['unique'] == 'true',
                     (string)$column['field'],
                     $column['required'] == 'true',
                     (string)$column['regexp'],
@@ -100,6 +100,9 @@ class BaseModel
             if ($column['constraint']) {
                 $baseColumn->setConstraint(json_decode(preg_replace('|[\']|', '"', (string)$column['constraint'])));
             }
+            if ($column['extra']) {
+                $baseColumn->setExtra($column['extra']);
+            }
         }
     }
 
@@ -108,9 +111,8 @@ class BaseModel
     /**                    STRUCTURE                        **/
 
     /**
-     * @short adds column
-     * @access public
-     * @param Column column - column to add
+     * @param Column $column
+     * @return Column
      */
     public function addColumn(Column $column)
     {
@@ -120,8 +122,7 @@ class BaseModel
     // -------------------------------------------------------------------------
 
     /**
-     * @short returns columns list
-     * @access public
+     * @return ColumnCollection
      */
     public function getColumns()
     {
@@ -131,14 +132,14 @@ class BaseModel
     // -------------------------------------------------------------------------
 
     /**
-     * @short returns column by column name
-     * @access public
-     * @param string name - column name
+     * @param $name
+     * @return Column
+     * @throws \Exception
      */
     public function getColumn($name)
     {
         if (!array_key_exists($name, $this->columns)) {
-            return false;
+            throw new \Exception;
         }
 
         return $this->columns[$name];
@@ -174,12 +175,8 @@ class BaseModel
     {
         $select = $this->db->select('COUNT(*)')->from($this->table);
 
-        if ($filter && $this->generalFilter)
-            $filter->merge($this->generalFilter);
-        elseif ($this->generalFilter)
-            $filter = $this->generalFilter;
-
         $this->applyConditions($select, $filter);
+
         return (int)$select->fetchSingle();
     }
 
@@ -193,32 +190,23 @@ class BaseModel
 
     // -------------------------------------------------------------------------
 
-    public function find(IModelFilter $filter = null, $results = '*')
+    public function find(IModelFilter $filter, $results = '*')
     {
         $select = $this->db->select($results)->from($this->table);
-        $fetchType = 'ALL'; // default settings
 
-        if ($filter && $this->generalFilter)
-            $filter->merge($this->generalFilter);
-        elseif ($this->generalFilter)
-            $filter = $this->generalFilter;
-
-        if (!is_null($filter)) {
-            $this->applyConditions($select, $filter);
-            foreach ($filter->getGroupBy() as $column => $value)
-                $select->groupBy($column);
-            foreach ($filter->getSortBy() as $column => $direction)
-                $select->orderBy(($column ? '`' . $column . '`' : ''), $direction);
-            if (Arrays::existsValueAtIndexName($filter->getLimit(), 'firstIndex') &&
-                Arrays::existsValueAtIndexName($filter->getLimit(), 'limit')
-            ) {
-                $select->offset(Arrays::getValueByIndexName($filter->getLimit(), 'firstIndex'));
-                $select->limit(Arrays::getValueByIndexName($filter->getLimit(), 'limit'));
-            }
-            $fetchType = $filter->getFetchType();
+        $this->applyConditions($select, $filter);
+        foreach ($filter->getGroupBy() as $column => $value)
+            $select->groupBy($column);
+        foreach ($filter->getSortBy() as $column => $direction)
+            $select->orderBy(($column ? '`' . $column . '`' : ''), $direction);
+        if (Arrays::existsValueAtIndexName($filter->getLimit(), 'firstIndex') &&
+            Arrays::existsValueAtIndexName($filter->getLimit(), 'limit')
+        ) {
+            $select->offset(Arrays::getValueByIndexName($filter->getLimit(), 'firstIndex'));
+            $select->limit(Arrays::getValueByIndexName($filter->getLimit(), 'limit'));
         }
 
-        if ($fetchType == 'SINGLE') {
+        if ($filter->getFetchType() == 'SINGLE') {
             if (!$result = $select->fetch())
                 return false;
             // unserialize values if needed
@@ -330,8 +318,9 @@ class BaseModel
         $matches = preg_split('| as |', $labelColumn);
         if (count($matches) > 1)
             $labelColumn = $matches[count($matches) - 1];
+
         foreach ($values as $key => $value)
-            $keyValues[$value[$keyColumn]] = String::capitalize($value[$labelColumn]);
+            $keyValues[$value[$keyColumn]] = $value[$labelColumn];
 
         return $keyValues;
     }
@@ -365,8 +354,9 @@ class BaseModel
      */
     protected function applyConditions(\Dibi\Fluent $command, IModelFilter $filter = null)
     {
-        if (is_null($filter))
-            return;
+        if ($this->generalFilter && !$filter->generalUsed()) {
+            $filter->setGeneral($this->generalFilter);
+        }
 
         foreach ($filter->getConditions() as $column => $condition) {
             // if column is serialized you cannot search in it
@@ -537,39 +527,6 @@ class BaseModel
         }
 
         return $data['id'];
-    }
-
-    // -------------------------------------------------------------------------
-
-    /**
-     * @short writes comment to dibi log
-     * @access public
-     */
-    public function setComment($note)
-    {
-        //	dibi::query(' /******'.$note.'******/ ');
-    }
-
-    // -------------------------------------------------------------------------
-
-    /**
-     * @short returns cleaned filter
-     * @access public
-     */
-    public function filter()
-    {
-        return $this->filter->clear();
-    }
-
-    // -------------------------------------------------------------------------
-
-    /**
-     * @short returns cleaned singleFilter
-     * @access public
-     */
-    public function singleFilter()
-    {
-        return $this->singleFilter->clear();
     }
 
     /**

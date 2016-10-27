@@ -40,6 +40,9 @@ class Authenticator extends Object implements IAuthenticator
             throw new AuthenticationException('User not found.');
         }
 
+        if (strlen($password) !== 32)
+            $password = md5($password);
+
         if ($this->parameters['users'][$email] !== $password) {
             throw new AuthenticationException('Invalid password.');
         }

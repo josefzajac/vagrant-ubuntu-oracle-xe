@@ -7,11 +7,9 @@ class Column
     private $name;
     private $type;
     private $default;
+    protected $value;
 
     /* db index info */
-    private $isnull;
-    private $primary;
-    private $unique;
     private $constraint;
 
     /* rendering & conditions */
@@ -25,15 +23,13 @@ class Column
     private $msg;
     private $panel;
     private $serialize = false;
+    protected $extra;
 
-    public function __construct(
+    public function setValues(
         $label,
         $name,
         $type = 'varchar',
         $default = '',
-        $isnull = false,
-        $primary = false,
-        $unique = false,
         $fieldType = "varchar",
         $isrequired = false,
         $regexp = '',
@@ -46,16 +42,14 @@ class Column
         $this->type = $type;
         $this->default = $default;
 
-        $this->isnull = $isnull;
-        $this->primary = $primary;
-        $this->unique = $unique;
-
         $this->fieldType = $fieldType;
 
         $this->isrequired = $isrequired;
         $this->regexp = $regexp;
         $this->msg = $msg;
         $this->serialize = $serialize;
+
+        return $this;
     }
 
     public function grid($render = null, $gridLenght = 200)
@@ -119,11 +113,6 @@ class Column
         return $this->type;
     }
 
-    public function getIsNull()
-    {
-        return $this->isnull;
-    }
-
     public function getPrimary()
     {
         return $this->primary;
@@ -162,5 +151,33 @@ class Column
     public function getSerialize()
     {
         return $this->serialize;
+    }
+
+    public function getAttr($key)
+    {
+        if (! isset($this->{$key}))
+            throw new \Exception('No valid KEY in App\Model\Column');
+
+        return $this->{$key};
+    }
+
+    public function setExtra($extra)
+    {
+        $this->extra = $extra;
+    }
+
+    public function setValue($val)
+    {
+        $this->value = $val;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->value;
     }
 }

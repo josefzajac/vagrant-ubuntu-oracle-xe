@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <table label="ProductLink">
-    <column label="Product_Id" name="PRODUCT_ID" is_id="true" type="varchar" isnull="false" default="0" field="text" grid="true"/>
-    <column label="Hist_No" name="HISTNO" type="INT" isnull="false" default="0" field="text" grid="true"/>
-    <column label="Seq_No" name="SEQNO" type="int" isnull="false" default="0" required="false" field="text" grid="true"/>
-    <column label="Link_Type" name="LINK_TYPE" type="varchar" isnull="false" default="0" field="text" grid="true"/>
-    <column label="Target_Product_Id" name="TARGET_PRODUCT_ID" type="varchar" isnull="false" default="0" field="text" grid="true"/>
+    <column label="Product_Id" name="PRODUCT_ID" is_id="true" type="varchar" default="0" field="text" grid="true"/>
+    <column label="Hist_No" name="HISTNO" type="INT" default="0" field="text" grid="true"/>
+    <column label="Seq_No" name="SEQNO" type="int" default="0" required="false" field="text" grid="true"/>
+    <column label="Link_Type" name="LINK_TYPE" type="varchar" default="0" field="text" grid="true"/>
+    <column label="Target_Product_Id" name="TARGET_PRODUCT_ID" type="varchar" default="0" field="text" grid="true"/>
 </table>

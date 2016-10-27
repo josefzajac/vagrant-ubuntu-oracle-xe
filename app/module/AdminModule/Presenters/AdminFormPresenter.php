@@ -2,27 +2,10 @@
 
 namespace App\AdminModule\Presenters;
 
-use App\Model\Repository\Authors;
-use App\Model\Factory\EntityFactory;
 use Nette;
 
 abstract class AdminFormPresenter extends AdminPresenter
 {
-    /**
-     * @var EntityFactory
-     */
-    protected $entityFactory;
-
-    /**
-     * @var Authors
-     */
-    protected $authors;
-
-    /**
-     * @var Repository
-     */
-    protected $repo;
-
     protected function startup()
     {
         parent::startup();

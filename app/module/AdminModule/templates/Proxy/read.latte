@@ -8,35 +8,42 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
+                <div class="box-body table-responsive no-padding this_is_grid">
+                <h3 class="box-title">{$gridData['model']}</h3>
+                <form method="get" action="{link Proxy:read, model=>$gridData['model']}">
+                <input type="hidden" name="returnType" value="html" />
                 <div class="box-header">
-                    {for $i = 1; $i <= $pages; $i++}
-                        <a n:href="this, 'page'=>$i" class="btn btn-primary">{$i}</a>
-                    {/for}
-                    <div class="row"><div class="col-sm-6"><div class="dataTables_length" id="example1_length"><label>Show <select name="example1_length" aria-controls="example1" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-6"><div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1"></label></div></div></div>
+                    <div class="row">
+                        <div class="dataTables_paginate paging_simple_numbers">
+                            <ul class="pagination">
+                                {for $i = 1; $i <= $gridData['pages']; $i++}
+                                    <li class="paginate_button {if $i == $gridData['page']} active {/if}"><a n:href="this, 'page'=>$i">{$i}</a></li>
+                                {/for}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {*<div class="col-sm-6">*}
+                            {*<div class="dataTables_length" id="example1_length"><label>Show*}
+                                    {*<select name="example1_length" aria-controls="example1" class="form-control input-sm">*}
+                                        {*<option value="10">10</option>*}
+                                        {*<option value="25">25</option>*}
+                                        {*<option value="50">50</option>*}
+                                        {*<option value="100">100</option>*}
+                                    {*</select>*}
+                                    {*entries</label>*}
+                            {*</div>*}
+                        {*</div>*}
+                        <div class="col-sm-6 dataTables_filter">
+                            <label>Search:<input type="search" class="form-control input-sm" name="query" value="{$control->getParameter('query')}"></label>
+                            <input type="submit" value="Search" />
+                        </div>
+                    </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
+                </form>
 
-                    <table class="table table-hover">
-                        <tr>
-                            {foreach $keys as $k}
-                                <th>{$k}</th>
-                            {/foreach}
-                            <th>Detail</th>
-                        </tr>
-                        <tr n:foreach="$items as $item">
-                            {foreach $item as $k => $v}
-                                <td>{$v}</td>
-                            {/foreach}
-                            <td><a href="{link detail, id => $item->{$modelObject->idColumn}, model => $model}">DETAIL</a></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="box-header">
-                    {for $i = 1; $i <= $pages; $i++}
-                        <a n:href="this, 'page'=>$i" class="btn btn-primary">{$i}</a>
-                    {/for}
-                </div>
+                {include _grid.latte}
+                </div><!-- /.this_is_grid -->
             </div>
         </div>
     </div>

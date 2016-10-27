@@ -11,6 +11,7 @@ parameters:
     users:
         system: 1d0258c2440a8d19e716292b231e3190
         admin2: superadmin
+
     menu_entities:
         TariffSpace: Tariff Space
 

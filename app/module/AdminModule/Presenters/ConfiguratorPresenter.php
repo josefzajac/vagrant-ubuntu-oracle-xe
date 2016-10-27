@@ -2,6 +2,7 @@
 namespace App\AdminModule\Presenters;
 
 use App\Model\BaseModel;
+use App\Model\Column\DateColumn;
 use App\Model\Filter\ModelFilter;
 use App\Model\ModelStorage;
 use Nette\Utils\Strings as String;
@@ -73,6 +74,7 @@ class ConfiguratorPresenter extends AdminPresenter
                 'name' => $modelObject->table . '_' . $column->getName(),
                 'fieldLabel' => $column->getLabel(),
                 'allowBlank' => !$column->getIsRequired(),
+                'xtype' => 'text',
                 'value' => $data && array_key_exists($column->getName(), $data) ? $data[$column->getName()] : $this->getParameter($column->getName(), $column->getDefault())
             ];
 
@@ -96,7 +98,7 @@ class ConfiguratorPresenter extends AdminPresenter
 
                 case 'datepicker':
                     $item['xtype'] = 'datefield';
-                    $item['format'] = BaseModel::DATE_FORMAT;
+                    $item['format'] = DateColumn::DATE_FORMAT;
                     break;
 
                 case 'longtext':
@@ -113,7 +115,7 @@ class ConfiguratorPresenter extends AdminPresenter
                     if (!is_null($constraint = $column->getConstraint())) {
                         $columnDataFilter = new ModelFilter();
                         if (($condition = @$column->getConstraint()->condition) && !is_null(
-                                $constraintId = $this->getParam($condition->source->param)
+                                $constraintId = $this->getParameter($condition->source->param)
                             )
                         ) {
                             $conObject = ModelStorage::getModelByModelClass($condition->source->model);
@@ -205,34 +207,19 @@ class ConfiguratorPresenter extends AdminPresenter
             $tabItems[] = $panel;
         }
 
-        if (count($panels) > 0) {
-            $responseData['columns'][] = [
-                'fieldLabel' => 'Tab1::',
-                'xtype' => 'tabpanel',
-                'defaults' => ['bodyStyle' => 'padding:10px'],
-                'enableTabScroll' => true,
-                'activeTab' => 0,
-                'layoutOnTabChange' => true,
-                'items' => $tabItems,
-            ];
-        }
+//        if (count($panels) > 0) {
+//            $responseData['columns'][] = [
+//                'fieldLabel' => 'Tab1::',
+//                'xtype' => 'tabpanel',
+//                'defaults' => ['bodyStyle' => 'padding:10px'],
+//                'enableTabScroll' => true,
+//                'activeTab' => 0,
+//                'layoutOnTabChange' => true,
+//                'items' => $tabItems,
+//            ];
+//        }
 
-
-        $responseData['proxy'] = $this->link('Proxy:write', ['model' => $model, 'id' => $id]);
-
-        if ($this->returnJson($returnType)) {
-            echo json_encode($responseData);
-            $this->terminate();
-        }
-
-        if ($this->returnArray($returnType)) {
-            return $responseData;
-        }
-    }
-
-    protected function returnJson($returnType)
-    {
-        return $returnType == 'JSON';
+        return $responseData;
     }
 
     protected function returnArray($returnType)
